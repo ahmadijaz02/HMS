@@ -1,0 +1,30 @@
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: hms-server
+    ports:
+      - "5001:5000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - hms-network
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: http://localhost:5001/api
+    container_name: hms-client
+    ports:
+      - "80:80"
+    networks:
+      - hms-network
+    restart: unless-stopped
+
+networks:
+  hms-network:
+    driver: bridge

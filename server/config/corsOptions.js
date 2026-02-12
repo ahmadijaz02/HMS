@@ -1,6 +1,9 @@
 const allowedOrigins = [
+    'http://localhost',
+    'http://localhost:80',
     'http://localhost:3000',
     'http://localhost:5000',
+    'http://localhost:5001',
     process.env.CLIENT_URL
 ].filter(Boolean);
 

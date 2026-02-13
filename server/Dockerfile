@@ -11,7 +11,13 @@ COPY package*.json ./
 RUN npm install
 
 # Copy application code
+# Protected by .dockerignore - excludes node_modules, .env, and sensitive files
 COPY . .
+
+# Create a non-root user and switch to it
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+USER nodejs
 
 # Expose port
 EXPOSE 5000

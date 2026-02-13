@@ -2,8 +2,10 @@
 FROM node:18-alpine AS build
 
 ARG REACT_APP_API_URL=http://localhost:5001/api
+ARG REACT_APP_SOCKET_URL=http://localhost:5001
 
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
+ENV REACT_APP_SOCKET_URL=$REACT_APP_SOCKET_URL
 
 # Set working directory
 WORKDIR /app
@@ -29,14 +31,6 @@ COPY --from=build /app/build /usr/share/nginx/html
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Create a non-root user and change ownership of nginx directories
-RUN addgroup -g 101 -S nginx && \
-    adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -c "Nginx web server" -G nginx nginx && \
-    chown -R nginx:nginx /usr/share/nginx/html /var/cache/nginx /var/log/nginx
-
-# Switch to non-root user
-USER nginx
 
 # Expose port
 EXPOSE 80

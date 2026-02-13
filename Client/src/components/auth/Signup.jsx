@@ -18,7 +18,12 @@ import {
   InputGroup,
   InputRightElement,
   IconButton,
+  SimpleGrid,
+  HStack,
+  Badge,
+  Link
 } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 const Signup = () => {
@@ -104,119 +109,186 @@ const Signup = () => {
   };
 
   return (
-    <Container maxW="container.sm" py={8}>
-      <VStack spacing={8}>
-        <Heading>Sign Up</Heading>
-        <Box w="100%" p={8} borderWidth={1} borderRadius={8} boxShadow="lg">
-          <VStack spacing={4} as="form" onSubmit={handleSubmit}>
-            <FormControl isRequired>
-              <FormLabel>Username</FormLabel>
-              <Input
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                placeholder="Enter username"
-                disabled={loading}
-              />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel>Email</FormLabel>
-              <Input
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Enter email"
-                disabled={loading}
-              />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
-                <Input
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Enter password"
-                  disabled={loading}
-                />
-                <InputRightElement>
-                  <IconButton
-                    icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
-                    onClick={() => setShowPassword(!showPassword)}
-                    variant="ghost"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  />
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel>First Name</FormLabel>
-              <Input
-                name="profile.firstName"
-                value={formData.profile.firstName}
-                onChange={handleChange}
-                placeholder="Enter first name"
-                disabled={loading}
-              />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel>Last Name</FormLabel>
-              <Input
-                name="profile.lastName"
-                value={formData.profile.lastName}
-                onChange={handleChange}
-                placeholder="Enter last name"
-                disabled={loading}
-              />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel>Phone Number</FormLabel>
-              <Input
-                name="profile.phoneNumber"
-                value={formData.profile.phoneNumber}
-                onChange={handleChange}
-                placeholder="Enter phone number"
-                disabled={loading}
-              />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel>Role</FormLabel>
-              <RadioGroup name="role" value={formData.role} onChange={(value) => setFormData(prev => ({ ...prev, role: value }))}>
-                <Stack direction="row">
-                  <Radio value="patient">Patient</Radio>
-                  <Radio value="doctor">Doctor</Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-
-            <Button 
-              type="submit" 
-              colorScheme="blue" 
-              size="lg" 
-              w="100%"
-              isLoading={loading}
-            >
-              Sign Up
-            </Button>
-
-            <Text textAlign="center">
-              Already have an account?{' '}
-              <Button variant="link" onClick={() => navigate('/login')}>
-                Login
-              </Button>
+    <Box minH="100vh" bg="gray.50" position="relative" overflow="hidden">
+      <Box
+        position="absolute"
+        top="-120px"
+        right="-120px"
+        w="300px"
+        h="300px"
+        bg="purple.200"
+        opacity={0.2}
+        filter="blur(80px)"
+        borderRadius="full"
+      />
+      <Container maxW="6xl" py={{ base: 12, md: 20 }} position="relative">
+        <Stack direction={{ base: 'column', md: 'row' }} spacing={{ base: 10, md: 16 }} align="center">
+          <VStack align="flex-start" spacing={5} flex="1">
+            <Text fontSize="sm" letterSpacing="0.3em" color="gray.500">
+              HOSPITAL MANAGEMENT SYSTEM
             </Text>
+            <Heading fontFamily="'DM Serif Display', serif" fontSize={{ base: '3xl', md: '4xl' }}>
+              NOVACARE HEALTH SYSTEM
+            </Heading>
+            <Text color="gray.600" fontSize="lg">
+              Create a verified NovaCare profile to access appointments, records, and secure care messaging.
+            </Text>
+            <HStack spacing={3} flexWrap="wrap">
+              <Badge colorScheme="teal" variant="subtle">Verified profiles</Badge>
+              <Badge colorScheme="blue" variant="subtle">Care coordination</Badge>
+              <Badge colorScheme="cyan" variant="subtle">Protected data</Badge>
+            </HStack>
           </VStack>
-        </Box>
-      </VStack>
-    </Container>
+
+          <Box
+            flex="1"
+            w="100%"
+            p={{ base: 6, md: 8 }}
+            bg="white"
+            borderRadius="2xl"
+            boxShadow="2xl"
+            borderWidth="1px"
+            borderColor="gray.100"
+          >
+            <VStack spacing={4} as="form" onSubmit={handleSubmit}>
+              <Heading size="md" w="100%">
+                Create your NovaCare account
+              </Heading>
+              <Text color="gray.500" w="100%">
+                Enter your details to request access to NovaCare.
+              </Text>
+
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="100%">
+                <FormControl isRequired>
+                  <FormLabel>Username</FormLabel>
+                  <Input
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    placeholder="Enter username"
+                    disabled={loading}
+                    bg="gray.50"
+                    borderColor="gray.200"
+                    _focus={{ bg: 'white', borderColor: 'purple.400' }}
+                  />
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Email</FormLabel>
+                  <Input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Enter email"
+                    disabled={loading}
+                    bg="gray.50"
+                    borderColor="gray.200"
+                    _focus={{ bg: 'white', borderColor: 'purple.400' }}
+                  />
+                </FormControl>
+              </SimpleGrid>
+
+              <FormControl isRequired>
+                <FormLabel>Password</FormLabel>
+                <InputGroup>
+                  <Input
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Enter password"
+                    disabled={loading}
+                    bg="gray.50"
+                    borderColor="gray.200"
+                    _focus={{ bg: 'white', borderColor: 'purple.400' }}
+                  />
+                  <InputRightElement>
+                    <IconButton
+                      icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                      onClick={() => setShowPassword(!showPassword)}
+                      variant="ghost"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    />
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="100%">
+                <FormControl isRequired>
+                  <FormLabel>First Name</FormLabel>
+                  <Input
+                    name="profile.firstName"
+                    value={formData.profile.firstName}
+                    onChange={handleChange}
+                    placeholder="Enter first name"
+                    disabled={loading}
+                    bg="gray.50"
+                    borderColor="gray.200"
+                    _focus={{ bg: 'white', borderColor: 'purple.400' }}
+                  />
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Last Name</FormLabel>
+                  <Input
+                    name="profile.lastName"
+                    value={formData.profile.lastName}
+                    onChange={handleChange}
+                    placeholder="Enter last name"
+                    disabled={loading}
+                    bg="gray.50"
+                    borderColor="gray.200"
+                    _focus={{ bg: 'white', borderColor: 'purple.400' }}
+                  />
+                </FormControl>
+              </SimpleGrid>
+
+              <FormControl isRequired>
+                <FormLabel>Phone Number</FormLabel>
+                <Input
+                  name="profile.phoneNumber"
+                  value={formData.profile.phoneNumber}
+                  onChange={handleChange}
+                  placeholder="Enter phone number"
+                  disabled={loading}
+                  bg="gray.50"
+                  borderColor="gray.200"
+                  _focus={{ bg: 'white', borderColor: 'purple.400' }}
+                />
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel>Role</FormLabel>
+                <RadioGroup name="role" value={formData.role} onChange={(value) => setFormData(prev => ({ ...prev, role: value }))}>
+                  <Stack direction="row">
+                    <Radio value="patient">Patient</Radio>
+                    <Radio value="doctor">Doctor</Radio>
+                  </Stack>
+                </RadioGroup>
+              </FormControl>
+
+              <Button 
+                type="submit" 
+                colorScheme="purple" 
+                size="lg" 
+                w="100%"
+                isLoading={loading}
+              >
+                Create Account
+              </Button>
+
+              <Text textAlign="center" fontSize="sm">
+                Already have an account?{' '}
+                <Link as={RouterLink} to="/login" color="purple.500" fontWeight="semibold">
+                  Login
+                </Link>
+              </Text>
+            </VStack>
+          </Box>
+        </Stack>
+      </Container>
+    </Box>
   );
 };
 

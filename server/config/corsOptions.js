@@ -32,4 +32,6 @@ const corsOptions = {
     maxAge: 600 // 10 minutes
 };
 
+corsOptions.allowedOrigins = allowedOrigins;
+
 module.exports = corsOptions; 

@@ -13,7 +13,10 @@ import {
     Divider,
     useToast,
     Center,
-    Link
+    Link,
+    Stack,
+    HStack,
+    Badge
 } from '@chakra-ui/react';
 import axios from '../../utils/axios';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
@@ -127,78 +130,145 @@ const Login = () => {
     };
 
     return (
-        <Container maxW="container.sm" py={8}>
-            <VStack spacing={8}>
-                <Heading>Hospital Management System</Heading>
-                <Box w="100%" p={8} borderWidth={1} borderRadius={8} boxShadow="lg">
-                    <VStack spacing={4} as="form" onSubmit={handleSubmit}>
-                        <FormControl isRequired>
-                            <FormLabel>Email Address</FormLabel>
-                            <Input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                disabled={loading}
-                            />
-                        </FormControl>
-
-                        <FormControl isRequired>
-                            <FormLabel>Password</FormLabel>
-                            <Input
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                disabled={loading}
-                            />
-                        </FormControl>
-
-                        <Text align="right" w="100%">
-                            <Link 
-                                as={RouterLink} 
-                                to="/forgot-password" 
-                                color="blue.500"
-                                onClick={() => {
-                                    if (formData.email) {
-                                        localStorage.setItem('loginEmail', formData.email);
-                                    }
-                                }}
-                            >
-                                Forgot Password?
-                            </Link>
+        <Box minH="100vh" bg="gray.50" position="relative" overflow="hidden">
+            <Box
+                position="absolute"
+                top="-120px"
+                left="-120px"
+                w="280px"
+                h="280px"
+                bg="teal.200"
+                opacity={0.25}
+                filter="blur(80px)"
+                borderRadius="full"
+            />
+            <Box
+                position="absolute"
+                bottom="-140px"
+                right="-140px"
+                w="320px"
+                h="320px"
+                bg="blue.200"
+                opacity={0.25}
+                filter="blur(80px)"
+                borderRadius="full"
+            />
+            <Container maxW="6xl" py={{ base: 12, md: 20 }} position="relative">
+                <Stack direction={{ base: 'column', md: 'row' }} spacing={{ base: 10, md: 16 }} align="center">
+                    <VStack align="flex-start" spacing={5} flex="1">
+                        <Text fontSize="sm" letterSpacing="0.3em" color="gray.500">
+                            HOSPITAL MANAGEMENT SYSTEM
                         </Text>
-
-                        <Button
-                            type="submit"
-                            colorScheme="blue"
-                            width="100%"
-                            isLoading={loading}
+                        <Heading
+                            fontFamily="'DM Serif Display', serif"
+                            fontSize={{ base: '3xl', md: '4xl' }}
+                            lineHeight="short"
                         >
-                            Sign In
-                        </Button>
-
-                        <Text>
-                            Don't have an account?{' '}
-                            <Link as={RouterLink} to="/signup" color="blue.500">
-                                Sign Up
-                            </Link>
+                            NOVACARE HEALTH SYSTEM
+                        </Heading>
+                        <Text color="gray.600" fontSize="lg">
+                            Secure access for patients, clinicians, and hospital staff across the NovaCare network.
                         </Text>
+                        <HStack spacing={3} flexWrap="wrap">
+                            <Badge colorScheme="teal" variant="subtle">HIPAA-ready workflows</Badge>
+                            <Badge colorScheme="blue" variant="subtle">Realtime care updates</Badge>
+                            <Badge colorScheme="cyan" variant="subtle">Protected messaging</Badge>
+                        </HStack>
                     </VStack>
 
-                    <Divider my={6} />
+                    <Box
+                        flex="1"
+                        w="100%"
+                        p={{ base: 6, md: 8 }}
+                        bg="white"
+                        borderRadius="2xl"
+                        boxShadow="2xl"
+                        borderWidth="1px"
+                        borderColor="gray.100"
+                    >
+                        <VStack spacing={4} as="form" onSubmit={handleSubmit}>
+                            <Heading size="md" w="100%">
+                                Sign in to NovaCare
+                            </Heading>
+                            <Text color="gray.500" w="100%">
+                                Use your NovaCare credentials to continue.
+                            </Text>
 
-                    <Center>
-                        <GoogleLogin
-                            onSuccess={handleGoogleSuccess}
-                            onError={handleGoogleError}
-                            useOneTap
-                            disabled={loading}
-                        />
-                    </Center>
-                </Box>
-            </VStack>
-        </Container>
+                            <FormControl isRequired>
+                                <FormLabel>Email Address</FormLabel>
+                                <Input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    disabled={loading}
+                                    bg="gray.50"
+                                    borderColor="gray.200"
+                                    _focus={{ bg: 'white', borderColor: 'teal.400' }}
+                                />
+                            </FormControl>
+
+                            <FormControl isRequired>
+                                <FormLabel>Password</FormLabel>
+                                <Input
+                                    type="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    disabled={loading}
+                                    bg="gray.50"
+                                    borderColor="gray.200"
+                                    _focus={{ bg: 'white', borderColor: 'teal.400' }}
+                                />
+                            </FormControl>
+
+                            <Text align="right" w="100%" fontSize="sm">
+                                <Link 
+                                    as={RouterLink} 
+                                    to="/forgot-password" 
+                                    color="teal.500"
+                                    onClick={() => {
+                                        if (formData.email) {
+                                            localStorage.setItem('loginEmail', formData.email);
+                                        }
+                                    }}
+                                >
+                                    Forgot Password?
+                                </Link>
+                            </Text>
+
+                            <Button
+                                type="submit"
+                                colorScheme="teal"
+                                width="100%"
+                                size="lg"
+                                isLoading={loading}
+                            >
+                                Sign In
+                            </Button>
+
+                            <Text fontSize="sm">
+                                Don&apos;t have an account?{' '}
+                                <Link as={RouterLink} to="/signup" color="teal.500" fontWeight="semibold">
+                                    Sign Up
+                                </Link>
+                            </Text>
+                        </VStack>
+
+                        <Divider my={6} />
+
+                        <Center>
+                            <GoogleLogin
+                                onSuccess={handleGoogleSuccess}
+                                onError={handleGoogleError}
+                                useOneTap
+                                disabled={loading}
+                            />
+                        </Center>
+                    </Box>
+                </Stack>
+            </Container>
+        </Box>
     );
 };
 

@@ -6,8 +6,8 @@ services:
     container_name: hms-server
     ports:
       - "5001:5000"
-    environment:
-      - NODE_ENV=production
+    env_file:
+      - ./server/.env
     networks:
       - hms-network
     restart: unless-stopped
@@ -18,6 +18,7 @@ services:
       dockerfile: Dockerfile
       args:
         REACT_APP_API_URL: http://localhost:5001/api
+        REACT_APP_SOCKET_URL: http://localhost:5001
     container_name: hms-client
     ports:
       - "80:80"

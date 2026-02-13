@@ -20,7 +20,15 @@ import { FiSend, FiRefreshCw } from 'react-icons/fi';
 import io from 'socket.io-client';
 import axios from '../../utils/axios';
 
-const SOCKET_URL = 'http://localhost:5000';
+const SOCKET_URL = (() => {
+    if (process.env.REACT_APP_SOCKET_URL) {
+        return process.env.REACT_APP_SOCKET_URL;
+    }
+
+    const port = window.location.port;
+    const socketPort = port === '3000' ? '5000' : '5001';
+    return `${window.location.protocol}//${window.location.hostname}:${socketPort}`;
+})();
 
 const Chat = ({ userType }) => {
     const [messages, setMessages] = useState([]);
@@ -30,6 +38,7 @@ const Chat = ({ userType }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [connecting, setConnecting] = useState(true);
+    const [socketError, setSocketError] = useState('');
     const messagesEndRef = useRef(null);
     const processedMessages = useRef(new Set());
     const toast = useToast();
@@ -84,7 +93,7 @@ const Chat = ({ userType }) => {
                         name: currentUser.username,
                         role: currentUser.role
                     },
-                    transports: ['websocket'],
+                    transports: ['websocket', 'polling'],
                     reconnection: true,
                     reconnectionAttempts: 5,
                     reconnectionDelay: 1000
@@ -112,6 +121,7 @@ const Chat = ({ userType }) => {
 
                 newSocket.on('connect', () => {
                     console.log('Socket connected, sending join event');
+                    setSocketError('');
                     const userData = {
                         userId: currentUser.id,
                         name: currentUser.username,
@@ -126,6 +136,7 @@ const Chat = ({ userType }) => {
                 newSocket.on('updateOnlineUsers', handleOnlineUsers);
                 newSocket.on('connect_error', (error) => {
                     console.error('Socket connection error:', error);
+                    setSocketError(error?.message || 'WebSocket connection error');
                     toast({
                         title: 'Connection Error',
                         description: 'Failed to connect to chat server. Please try again.',
@@ -135,6 +146,14 @@ const Chat = ({ userType }) => {
                     });
                     setConnecting(false);
                 });
+                newSocket.on('disconnect', (reason) => {
+                    console.warn('Socket disconnected:', reason);
+                    setSocketError(`Disconnected: ${reason}`);
+                });
+                newSocket.on('error', (error) => {
+                    console.error('Socket error:', error);
+                    setSocketError(error?.message || 'Socket error');
+                });
 
                 setSocket(newSocket);
                 await loadMessages();
@@ -143,6 +162,10 @@ const Chat = ({ userType }) => {
                     console.log('Cleaning up socket connection and event listeners');
                     newSocket.off('message', handleMessage);
                     newSocket.off('updateOnlineUsers', handleOnlineUsers);
+                    newSocket.off('connect');
+                    newSocket.off('connect_error');
+                    newSocket.off('disconnect');
+                    newSocket.off('error');
                     newSocket.close();
                 };
             } catch (error) {
@@ -326,6 +349,19 @@ const Chat = ({ userType }) => {
                             p={4}
                         >
                             <VStack align="stretch" spacing={4}>
+                                {socketError && (
+                                    <Box
+                                        bg="red.50"
+                                        border="1px"
+                                        borderColor="red.200"
+                                        borderRadius="md"
+                                        p={3}
+                                    >
+                                        <Text fontSize="sm" color="red.700">
+                                            {socketError}
+                                        </Text>
+                                    </Box>
+                                )}
                                 {messages.map((msg, index) => (
                                     <Box
                                         key={index}

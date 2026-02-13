@@ -337,7 +337,7 @@ const Prescriptions = () => {
     // This is a placeholder. In a real application, you would use a library like jsPDF
     // to generate a proper PDF document
     const prescriptionText = `
-      Hospital Management System
+      NOVACARE
       Prescription
       
       Patient: ${data.patient.name}

@@ -61,8 +61,8 @@ const Sidebar = () => {
       px={4}
     >
       <VStack spacing={8} align="stretch">
-        <Text fontSize="2xl" fontWeight="bold" textAlign="center" color="blue.600">
-          HMS
+        <Text fontSize="xl" fontWeight="bold" textAlign="center" color="blue.600">
+          NOVACARE
         </Text>
 
         <VStack spacing={2} align="stretch">

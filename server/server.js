@@ -22,9 +22,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: process.env.CLIENT_URL || 'http://localhost:3000',
-        methods: ['GET', 'POST'],
-        credentials: true
+        origin: corsOptions.allowedOrigins || 'http://localhost:3000',
+        methods: corsOptions.methods || ['GET', 'POST'],
+        credentials: corsOptions.credentials ?? true
     }
 });
 
